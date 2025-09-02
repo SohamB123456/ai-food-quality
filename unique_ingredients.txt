@@ -1,0 +1,42 @@
+import csv
+
+# List of known typos and their corrections
+corrections = {
+    'Cucumnber': 'Cucumber',
+    'Seaweeed Salad': 'Seaweed Salad',
+    'Hijki Seaweed': 'Hijiki Seaweed',
+    'Green Onions': 'Green Onion',
+    'Mandarin Oranges': 'Mandarin Orange',
+    'Sliced Onions': 'Sliced Onion',
+    'Slice Onions': 'Sliced Onion',
+    'Wonton Crisp': 'Wonton Crisps',
+    'Hijiki Salad': 'Hijiki Seaweed',
+    'Chilli Crisp': 'Chili Crisp',
+    'Onion Cr': 'Onion Crisps',
+    'Soft Tuna': 'Ahi Tuna',
+    'jpg': '',
+}
+
+unique_ingredients = set()
+
+with open('labels.csv', 'r') as f:
+    reader = csv.reader(f)
+    next(reader)  # skip header
+    for row in reader:
+        if len(row) < 2:
+            continue
+        ingredients_str = ','.join(row[1:])
+        for ing in ingredients_str.replace('"', '').split(','):
+            ing = ing.strip()
+            if not ing:
+                continue
+            # Apply corrections
+            ing = corrections.get(ing, ing)
+            if ing:
+                unique_ingredients.add(ing)
+
+with open('unique_ingredients.txt', 'w') as f:
+    for ing in sorted(unique_ingredients):
+        f.write(ing + '\n')
+
+print('unique_ingredients.txt regenerated and cleaned.')

@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis Results - PokeWorks QA</title>
+    <title>🍜 Analysis Results - PokeWorks QA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --pokeworks-orange: #FD9F27;
+            --pokeworks-red: #F63C49;
+            --pokeworks-black: #312F2E;
+            --pokeworks-gray: #818181;
+            --pokeworks-light-gray: #f8f9fa;
+            --white: #FFFFFF;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --error: #F44336;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,420 +27,663 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--pokeworks-light-gray);
+            color: var(--pokeworks-black);
             min-height: 100vh;
-            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--pokeworks-orange) 0%, var(--pokeworks-red) 100%);
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 3rem 0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 30px;
-            background: #f8f9fa;
+            padding: 0 2rem;
         }
 
         .summary-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: var(--white);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(253, 159, 39, 0.1);
         }
 
-        .summary-card h3 {
-            color: #333;
-            margin-bottom: 15px;
+        .summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--pokeworks-light-gray);
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--pokeworks-black);
+        }
+
+        .match-score {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            position: relative;
+        }
+
+        .score-circle.high {
+            background: linear-gradient(135deg, var(--success), #45a049);
+        }
+
+        .score-circle.medium {
+            background: linear-gradient(135deg, var(--warning), #f57c00);
+        }
+
+        .score-circle.low {
+            background: linear-gradient(135deg, var(--error), #d32f2f);
+        }
+
+        .score-text {
+            text-align: center;
+        }
+
+        .score-percentage {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .score-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--pokeworks-light-gray);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 1px solid rgba(253, 159, 39, 0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .stat-icon.matched {
+            background: var(--success);
+        }
+
+        .stat-icon.missing {
+            background: var(--warning);
+        }
+
+        .stat-icon.unexpected {
+            background: var(--error);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--pokeworks-gray);
+            font-size: 0.875rem;
+        }
+
+        .ingredients-section {
+            background: var(--white);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(253, 159, 39, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--pokeworks-black);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .ingredient-category {
+            background: var(--pokeworks-light-gray);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .ingredient-category.matched {
+            border-left-color: var(--success);
+            background: rgba(76, 175, 80, 0.05);
+        }
+
+        .ingredient-category.missing {
+            border-left-color: var(--warning);
+            background: rgba(255, 152, 0, 0.05);
+        }
+
+        .ingredient-category.unexpected {
+            border-left-color: var(--error);
+            background: rgba(244, 67, 54, 0.05);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .category-icon {
             font-size: 1.2rem;
         }
 
-        .summary-card .number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .summary-card.match .number {
-            color: #27ae60;
-        }
-
-        .summary-card.missing .number {
-            color: #f39c12;
-        }
-
-        .summary-card.unexpected .number {
-            color: #e74c3c;
-        }
-
-        .match-percentage {
-            background: linear-gradient(45deg, #27ae60, #2ecc71);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 30px;
-        }
-
-        .match-percentage h2 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .match-percentage .percentage {
-            font-size: 3.5rem;
-            font-weight: bold;
-        }
-
-        .details {
-            padding: 30px;
-        }
-
-        .section {
-            margin-bottom: 40px;
-        }
-
-        .section h3 {
-            color: #333;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .ingredient-grid {
+        .ingredient-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            gap: 0.5rem;
         }
 
-        .ingredient-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid;
-            transition: all 0.3s ease;
-        }
-
-        .ingredient-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .ingredient-card.matched {
-            border-left-color: #27ae60;
-            background: #f0f9ff;
-        }
-
-        .ingredient-card.missing {
-            border-left-color: #f39c12;
-            background: #fffbf0;
-        }
-
-        .ingredient-card.unexpected {
-            border-left-color: #e74c3c;
-            background: #fdf2f2;
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--white);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .ingredient-name {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
+            font-weight: 500;
         }
 
-        .ingredient-status {
-            font-size: 0.9rem;
-            color: #666;
+        .ingredient-confidence {
+            background: var(--pokeworks-light-gray);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            color: var(--pokeworks-gray);
         }
 
-        .actions {
-            padding: 30px;
-            text-align: center;
-            background: #f8f9fa;
+        .actions-section {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            margin: 0 10px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: 600;
             text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
+            background: linear-gradient(135deg, var(--pokeworks-orange), var(--pokeworks-red));
+            color: var(--white);
+            box-shadow: 0 8px 25px rgba(253, 159, 39, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(253, 159, 39, 0.4);
+            background: linear-gradient(135deg, #ff8e1a, #ff2938);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--pokeworks-red);
+            border: 2px solid var(--pokeworks-red);
+        }
+
+        .btn-outline:hover {
+            background: var(--pokeworks-red);
+            color: var(--white);
         }
 
         .btn-secondary {
-            background: #6c757d;
-            color: white;
+            background: var(--pokeworks-light-gray);
+            color: var(--pokeworks-black);
+            border: 2px solid var(--pokeworks-gray);
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        .btn-secondary:hover {
+            background: var(--pokeworks-gray);
+            color: var(--white);
         }
 
         .receipt-section {
-            background: #f8f9fa;
-            padding: 20px;
-            margin: 20px 30px;
-            border-radius: 15px;
-        }
-
-        .receipt-section h4 {
-            color: #333;
-            margin-bottom: 15px;
+            background: var(--white);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(253, 159, 39, 0.1);
         }
 
         .receipt-text {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #e0e0e0;
+            background: var(--pokeworks-light-gray);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--pokeworks-black);
+            border: 1px solid rgba(253, 159, 39, 0.1);
+        }
+
+        .footer {
+            background: var(--pokeworks-black);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.9rem;
         }
 
         @media (max-width: 768px) {
             .container {
-                margin: 10px;
-                border-radius: 15px;
+                padding: 0 1rem;
             }
             
-            .header h1 {
-                font-size: 2rem;
+            .header-title {
+                font-size: 1.5rem;
             }
             
-            .summary {
-                grid-template-columns: 1fr;
-                padding: 20px;
+            .summary-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
             }
             
-            .details {
-                padding: 20px;
-            }
-            
-            .ingredient-grid {
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .actions-section {
+                flex-direction: column;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 40px;
+            height: 40px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 30px;
+            height: 30px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🍣 Analysis Results</h1>
-            <p>Your PokeWorks bowl has been analyzed successfully!</p>
+    <div class="header">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
         </div>
-
-        <div class="match-percentage">
-            <h2>Overall Match</h2>
-            <div class="percentage" id="matchPercentage">--%</div>
+        
+        <div class="header-content">
+            <div class="logo">PW</div>
+            <h1 class="header-title">Analysis Complete</h1>
+            <p class="header-subtitle">Your bowl has been analyzed successfully</p>
         </div>
+    </div>
 
-        <div class="summary">
-            <div class="summary-card match">
-                <h3>✅ Matched</h3>
-                <div class="number" id="matchedCount">0</div>
-                <p>Ingredients found in both bowl and receipt</p>
-            </div>
-            <div class="summary-card missing">
-                <h3>⚠️ Missing</h3>
-                <div class="number" id="missingCount">0</div>
-                <p>Ingredients on receipt but not in bowl</p>
-            </div>
-            <div class="summary-card unexpected">
-                <h3>❌ Unexpected</h3>
-                <div class="number" id="unexpectedCount">0</div>
-                <p>Ingredients in bowl but not on receipt</p>
-            </div>
-        </div>
+    <div class="main-content">
+        <div class="container">
+            <!-- Summary Card -->
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h2 class="summary-title">Overall Match Score</h2>
+                    <div class="match-score">
+                        <div class="score-circle {{ 'high' if match_percentage >= 80 else 'medium' if match_percentage >= 60 else 'low' }}">
+                            {{ match_percentage }}%
+                        </div>
+                        <div class="score-text">
+                            <div class="score-percentage">{{ match_percentage }}%</div>
+                            <div class="score-label">Match Rate</div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="details">
-            <div class="section">
-                <h3>✅ Matched Ingredients</h3>
-                <div class="ingredient-grid" id="matchedGrid">
-                    <!-- Matched ingredients will be populated here -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon matched">✅</div>
+                        <div class="stat-number">{{ matched_count }}</div>
+                        <div class="stat-label">Matched Ingredients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon missing">⚠️</div>
+                        <div class="stat-number">{{ missing_count }}</div>
+                        <div class="stat-label">Missing Ingredients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon unexpected">❌</div>
+                        <div class="stat-number">{{ unexpected_count }}</div>
+                        <div class="stat-label">Unexpected Items</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="section">
-                <h3>⚠️ Missing Ingredients</h3>
-                <div class="ingredient-grid" id="missingGrid">
-                    <!-- Missing ingredients will be populated here -->
+            <!-- Ingredients Analysis -->
+            <div class="ingredients-section">
+                <h2 class="section-title">
+                    <span>🍜</span>
+                    Ingredient Analysis
+                </h2>
+
+                <div class="ingredients-grid">
+                    {% if matched_ingredients %}
+                    <div class="ingredient-category matched">
+                        <div class="category-header">
+                            <span class="category-icon">✅</span>
+                            <span>Matched Ingredients ({{ matched_ingredients|length }})</span>
+                        </div>
+                        <div class="ingredient-list">
+                            {% for ingredient in matched_ingredients %}
+                            <div class="ingredient-item">
+                                <span class="ingredient-name">{{ ingredient.name }}</span>
+                                <span class="ingredient-confidence">{{ ingredient.confidence }}%</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if missing_ingredients %}
+                    <div class="ingredient-category missing">
+                        <div class="category-header">
+                            <span class="category-icon">⚠️</span>
+                            <span>Missing Ingredients ({{ missing_ingredients|length }})</span>
+                        </div>
+                        <div class="ingredient-list">
+                            {% for ingredient in missing_ingredients %}
+                            <div class="ingredient-item">
+                                <span class="ingredient-name">{{ ingredient.name }}</span>
+                                <span class="ingredient-confidence">Expected</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if unexpected_ingredients %}
+                    <div class="ingredient-category unexpected">
+                        <div class="category-header">
+                            <span class="category-icon">❌</span>
+                            <span>Unexpected Ingredients ({{ unexpected_ingredients|length }})</span>
+                        </div>
+                        <div class="ingredient-list">
+                            {% for ingredient in unexpected_ingredients %}
+                            <div class="ingredient-item">
+                                <span class="ingredient-name">{{ ingredient.name }}</span>
+                                <span class="ingredient-confidence">{{ ingredient.confidence }}%</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="section">
-                <h3>❌ Unexpected Ingredients</h3>
-                <div class="ingredient-grid" id="unexpectedGrid">
-                    <!-- Unexpected ingredients will be populated here -->
-                </div>
-            </div>
-
+            <!-- Receipt Information -->
+            {% if receipt_ingredients %}
             <div class="receipt-section">
-                <h4>📄 Receipt Text (Extracted via OCR)</h4>
-                <div class="receipt-text" id="receiptText">
-                    <!-- Receipt text will be populated here -->
+                <h2 class="section-title">
+                    <span>📄</span>
+                    Receipt Ingredients
+                </h2>
+                <div class="receipt-text">
+                    {% for ingredient in receipt_ingredients %}
+                    <div>{{ ingredient }}</div>
+                    {% endfor %}
                 </div>
             </div>
-        </div>
+            {% endif %}
 
-        <div class="actions">
-            <a href="/" class="btn btn-primary">Analyze Another Image</a>
-            <button class="btn btn-secondary" onclick="exportResults()">Export Results</button>
+            <!-- Action Buttons -->
+            <div class="actions-section">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    New Analysis
+                </a>
+                <button class="btn btn-outline" onclick="exportReport()">
+                    <i class="fas fa-download"></i>
+                    Export Report
+                </button>
+                <button class="btn btn-secondary" onclick="shareResults()">
+                    <i class="fas fa-share"></i>
+                    Share Results
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-text">
+            © 2024 PokeWorks QA. Powered by advanced AI technology.
         </div>
     </div>
 
     <script>
-        // Load results from localStorage or fetch from server
-        let results = null;
-
-        function loadResults() {
-            // Try to get results from localStorage first
-            const storedResults = localStorage.getItem('lastResults');
-            if (storedResults) {
-                results = JSON.parse(storedResults);
-                displayResults();
-            } else {
-                // If no stored results, try to fetch from server
-                const filename = window.location.pathname.split('/').pop();
-                if (filename) {
-                    fetch(`/api/results/${filename}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            results = data;
-                            displayResults();
-                        })
-                        .catch(err => {
-                            console.error('Error fetching results:', err);
-                            showError('Could not load results. Please try analyzing another image.');
-                        });
-                }
-            }
-        }
-
-        function displayResults() {
-            if (!results) return;
-
-            // Update summary numbers
-            document.getElementById('matchPercentage').textContent = results.match_percentage + '%';
-            document.getElementById('matchedCount').textContent = results.matched_ingredients.length;
-            document.getElementById('missingCount').textContent = results.missing_ingredients.length;
-            document.getElementById('unexpectedCount').textContent = results.unexpected_ingredients.length;
-
-            // Populate ingredient grids
-            populateIngredientGrid('matchedGrid', results.matched_ingredients, 'matched', '✅ Matched');
-            populateIngredientGrid('missingGrid', results.missing_ingredients, 'missing', '⚠️ Missing');
-            populateIngredientGrid('unexpectedGrid', results.unexpected_ingredients, 'unexpected', '❌ Unexpected');
-
-            // Display receipt text
-            document.getElementById('receiptText').textContent = results.receipt_text || 'No text extracted from receipt';
-        }
-
-        function populateIngredientGrid(gridId, ingredients, status, statusText) {
-            const grid = document.getElementById(gridId);
-            grid.innerHTML = '';
-
-            if (ingredients.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #666; padding: 20px;">No ingredients found</div>';
-                return;
-            }
-
-            ingredients.forEach(ingredient => {
-                const card = document.createElement('div');
-                card.className = `ingredient-card ${status}`;
-                card.innerHTML = `
-                    <div class="ingredient-name">${ingredient}</div>
-                    <div class="ingredient-status">${statusText}</div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function exportResults() {
-            if (!results) return;
-
-            const exportData = {
-                timestamp: new Date().toISOString(),
-                filename: results.filename,
-                match_percentage: results.match_percentage,
-                matched_ingredients: results.matched_ingredients,
-                missing_ingredients: results.missing_ingredients,
-                unexpected_ingredients: results.unexpected_ingredients,
-                receipt_text: results.receipt_text,
-                detected_ingredients: results.detected_ingredients
+        function exportReport() {
+            // Simulate export functionality
+            const reportData = {
+                matchPercentage: {{ match_percentage }},
+                matchedIngredients: {{ matched_ingredients|tojson }},
+                missingIngredients: {{ missing_ingredients|tojson }},
+                unexpectedIngredients: {{ unexpected_ingredients|tojson }},
+                timestamp: new Date().toISOString()
             };
-
-            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `pokeworks-analysis-${Date.now()}.json`;
+            a.download = 'pokeworks-qa-report.json';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+            
+            showMessage('Report exported successfully!');
         }
 
-        function showError(message) {
-            // Create and show error message
-            const errorDiv = document.createElement('div');
-            errorDiv.style.cssText = `
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'PokeWorks QA Results',
+                    text: `My bowl analysis: ${match_percentage}% match rate`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(window.location.href);
+                showMessage('Link copied to clipboard!');
+            }
+        }
+
+        function showMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.cssText = `
                 position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #e74c3c;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--pokeworks-red);
                 color: white;
-                padding: 15px 20px;
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                padding: 1rem 2rem;
+                border-radius: 0.5rem;
+                font-weight: 500;
                 z-index: 1000;
+                animation: fadeInOut 2s ease-in-out;
             `;
-            errorDiv.textContent = message;
-            document.body.appendChild(errorDiv);
-
+            
+            document.body.appendChild(messageDiv);
+            
             setTimeout(() => {
-                document.body.removeChild(errorDiv);
-            }, 5000);
+                document.body.removeChild(messageDiv);
+            }, 2000);
         }
 
-        // Load results when page loads
-        document.addEventListener('DOMContentLoaded', loadResults);
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
-</html>
+</html> 
