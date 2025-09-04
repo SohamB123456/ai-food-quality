@@ -3,13 +3,13 @@ import os
 import uuid
 import json
 from datetime import datetime
-import cv2
-import numpy as np
-from PIL import Image
-import pytesseract
-from fuzzywuzzy import fuzz, process
-import base64
-import io
+import sys
+
+# Add current directory to path
+sys.path.append('.')
+
+# Import our advanced processor
+from simple_processor import simple_processor
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -18,19 +18,14 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 # Ensure upload directory exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Load ingredients list
-def load_ingredients():
-    try:
-        with open('Ingredients.txt', 'r') as f:
-            return [line.strip() for line in f if line.strip()]
-    except FileNotFoundError:
-        return []
-
-INGREDIENTS = load_ingredients()
-
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/demo')
+def demo():
+    """Demo navigation page showing all available interfaces"""
+    return render_template('demo.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -51,120 +46,153 @@ def upload_file():
         # Save file
         file.save(filepath)
         
-        # Process the image
+        # Process the image using simple ChatGPT processor
         try:
-            results = process_image(filepath)
-            results['filename'] = filename
-            return jsonify(results)
+            results = simple_processor.process_image(filepath, app.config['UPLOAD_FOLDER'])
+            if results:
+                results['filename'] = filename
+                return jsonify(results)
+            else:
+                return jsonify({'error': 'Failed to process image'}), 500
         except Exception as e:
             return jsonify({'error': str(e)}), 500
 
-def process_image(image_path):
-    """Process the uploaded image to detect bowl and receipt"""
-    # Load image
-    image = cv2.imread(image_path)
-    if image is None:
-        raise ValueError("Could not load image")
-    
-    # Convert to grayscale
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    
-    # Simple image splitting (assuming bowl on left, receipt on right)
-    height, width = gray.shape
-    mid_point = width // 2
-    
-    # Split image
-    bowl_region = gray[:, :mid_point]
-    receipt_region = gray[:, mid_point:]
-    
-    # Process receipt with OCR
-    receipt_text = extract_text(receipt_region)
-    
-    # Process bowl with ingredient detection
-    bowl_ingredients = detect_ingredients(bowl_region)
-    
-    # Match ingredients
-    matched, missing, unexpected = match_ingredients(receipt_text, bowl_ingredients)
-    
-    return {
-        'receipt_text': receipt_text,
-        'detected_ingredients': bowl_ingredients,
-        'matched_ingredients': matched,
-        'missing_ingredients': missing,
-        'unexpected_ingredients': unexpected,
-        'match_percentage': calculate_match_percentage(matched, missing, unexpected)
-    }
+# Old processing functions removed - now using advanced processor
 
-def extract_text(image):
-    """Extract text from image using OCR"""
+@app.route('/splash')
+def splash():
+    """Splash screen for mobile app demo"""
+    return render_template('splash.html')
+
+@app.route('/split-preview')
+def split_preview():
+    """Split preview screen for mobile app demo"""
+    return render_template('split-preview.html')
+
+@app.route('/detail-overlay')
+def detail_overlay():
+    """Detail overlay screen for mobile app demo"""
+    return render_template('detail-overlay.html')
+
+@app.route('/batch-process')
+def batch_process_page():
+    """Batch processing page"""
+    return render_template('batch_process.html')
+
+@app.route('/api/batch-process', methods=['POST'])
+def batch_process_api():
+    """API endpoint for batch processing"""
     try:
-        # Preprocess image for better OCR
-        # Apply thresholding
-        _, thresh = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        input_dir = request.json.get('input_dir', 'newImages')
+        output_dir = request.json.get('output_dir', 'batch_output')
         
-        # Extract text
-        text = pytesseract.image_to_string(thresh)
-        return text.strip()
+        results = simple_processor.batch_process(input_dir, output_dir)
+        return jsonify({
+            'success': True,
+            'results': results,
+            'count': len(results)
+        })
     except Exception as e:
-        print(f"OCR error: {e}")
-        return ""
+        return jsonify({'success': False, 'error': str(e)}), 500
 
-def detect_ingredients(image):
-    """Detect ingredients in bowl image"""
-    # This is a simplified version - in practice, you'd use more sophisticated
-    # computer vision techniques or ML models
-    ingredients = []
+@app.route('/mobile-results/<filename>')
+def mobile_results(filename):
+    """Enhanced mobile results screen"""
+    # Process the uploaded image to get results
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     
-    # Simple edge detection
-    edges = cv2.Canny(image, 50, 150)
+    if not os.path.exists(filepath):
+        return jsonify({'error': 'File not found'}), 404
     
-    # Find contours
-    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
-    # For now, return some placeholder ingredients
-    # In a real implementation, you'd analyze the image more thoroughly
-    ingredients = ["White Rice", "Salmon", "Avocado", "Cucumber"]
-    
-    return ingredients
-
-def match_ingredients(receipt_text, detected_ingredients):
-    """Match detected ingredients with receipt text using fuzzy matching"""
-    matched = []
-    missing = []
-    unexpected = []
-    
-    # Extract ingredients from receipt text
-    receipt_ingredients = []
-    for ingredient in INGREDIENTS:
-        if ingredient.lower() in receipt_text.lower():
-            receipt_ingredients.append(ingredient)
-    
-    # Match detected ingredients with receipt
-    for detected in detected_ingredients:
-        best_match = process.extractOne(detected, receipt_ingredients, scorer=fuzz.token_sort_ratio)
-        if best_match and best_match[1] > 80:  # 80% similarity threshold
-            matched.append(detected)
-        else:
-            unexpected.append(detected)
-    
-    # Find missing ingredients
-    for receipt_ingredient in receipt_ingredients:
-        if not any(process.extractOne(receipt_ingredient, matched, scorer=fuzz.token_sort_ratio)[1] > 80 for _ in [None]):
-            missing.append(receipt_ingredient)
-    
-    return matched, missing, unexpected
-
-def calculate_match_percentage(matched, missing, unexpected):
-    """Calculate overall match percentage"""
-    total_expected = len(matched) + len(missing)
-    if total_expected == 0:
-        return 0
-    
-    return round((len(matched) / total_expected) * 100, 2)
+    try:
+        # Process the image using simple ChatGPT processor
+        results_data = simple_processor.process_image(filepath, app.config['UPLOAD_FOLDER'])
+        
+        if not results_data:
+            raise Exception("Failed to process image")
+        
+        # Extract analysis data
+        analysis = results_data.get('analysis', {})
+        detected_ingredients = analysis.get('detected_ingredients', [])
+        
+        # Separate ingredients by status
+        matched = [ing for ing in detected_ingredients if ing.get('status') == 'matched']
+        missing = analysis.get('missing_ingredients', [])
+        unexpected = analysis.get('unexpected_ingredients', [])
+        
+        return render_template('results.html', 
+                             filename=filename,
+                             match_percentage=analysis.get('match_percentage', 0),
+                             matched_ingredients=matched,
+                             missing_ingredients=missing,
+                             unexpected_ingredients=unexpected,
+                             receipt_text=results_data.get('receipt_text', ''),
+                             detected_ingredients=detected_ingredients,
+                             summary=analysis.get('summary', ''),
+                             bowl_path=results_data.get('bowl_path', ''),
+                             receipt_path=results_data.get('receipt_path', ''))
+    except Exception as e:
+        return render_template('results.html', 
+                             filename=filename,
+                             match_percentage=0,
+                             matched_ingredients=[],
+                             missing_ingredients=[],
+                             unexpected_ingredients=[],
+                             receipt_text="Error processing image",
+                             detected_ingredients=[],
+                             summary=f"Error: {str(e)}",
+                             bowl_path="",
+                             receipt_path="",
+                             error=str(e))
 
 @app.route('/results/<filename>')
 def results(filename):
-    return render_template('results.html', filename=filename)
+    # Process the uploaded image to get results
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    
+    if not os.path.exists(filepath):
+        return jsonify({'error': 'File not found'}), 404
+    
+    try:
+        # Process the image using simple ChatGPT processor
+        results_data = simple_processor.process_image(filepath, app.config['UPLOAD_FOLDER'])
+        
+        if not results_data:
+            raise Exception("Failed to process image")
+        
+        # Extract analysis data
+        analysis = results_data.get('analysis', {})
+        detected_ingredients = analysis.get('detected_ingredients', [])
+        
+        # Separate ingredients by status
+        matched = [ing for ing in detected_ingredients if ing.get('status') == 'matched']
+        missing = analysis.get('missing_ingredients', [])
+        unexpected = analysis.get('unexpected_ingredients', [])
+        
+        return render_template('results.html', 
+                             filename=filename,
+                             match_percentage=analysis.get('match_percentage', 0),
+                             matched_ingredients=matched,
+                             missing_ingredients=missing,
+                             unexpected_ingredients=unexpected,
+                             receipt_text=results_data.get('receipt_text', ''),
+                             detected_ingredients=detected_ingredients,
+                             summary=analysis.get('summary', ''),
+                             bowl_path=results_data.get('bowl_path', ''),
+                             receipt_path=results_data.get('receipt_path', ''))
+    except Exception as e:
+        return render_template('results.html', 
+                             filename=filename,
+                             match_percentage=0,
+                             matched_ingredients=[],
+                             missing_ingredients=[],
+                             unexpected_ingredients=[],
+                             receipt_text="Error processing image",
+                             detected_ingredients=[],
+                             summary=f"Error: {str(e)}",
+                             bowl_path="",
+                             receipt_path="",
+                             error=str(e))
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5001)

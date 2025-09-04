@@ -3,21 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍜 Analysis Results - PokeWorks QA</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>PokeWorks QA - Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pokeworks-orange: #FD9F27;
-            --pokeworks-red: #F63C49;
-            --pokeworks-black: #312F2E;
-            --pokeworks-gray: #818181;
-            --pokeworks-light-gray: #f8f9fa;
+            --teal: #008080;
+            --teal-light: #00A0A0;
+            --teal-dark: #006666;
+            --coral: #FF6B6B;
+            --coral-light: #FF8E8E;
+            --coral-dark: #E55A5A;
             --white: #FFFFFF;
-            --success: #4CAF50;
-            --warning: #FF9800;
-            --error: #F44336;
+            --black: #000000;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition-normal: 0.3s ease;
         }
 
         * {
@@ -27,16 +56,40 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--pokeworks-light-gray);
-            color: var(--pokeworks-black);
+            font-family: var(--font-body);
+            background: var(--gray-50);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        .mobile-frame {
+            width: 375px;
+            height: 812px;
+            background: var(--gray-900);
+            border-radius: var(--radius-xl);
+            padding: 8px;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
         .header {
-            background: linear-gradient(135deg, var(--pokeworks-orange) 0%, var(--pokeworks-red) 100%);
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
             color: var(--white);
-            padding: 2rem 0;
+            padding: var(--spacing-lg);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -49,641 +102,621 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
             opacity: 0.3;
         }
 
         .header-content {
             position: relative;
-            z-index: 2;
-        }
-
-        .logo {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            z-index: 1;
         }
 
         .header-title {
-            font-size: 2rem;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: var(--spacing-sm);
         }
 
         .header-subtitle {
-            font-size: 1rem;
+            font-size: 0.875rem;
             opacity: 0.9;
         }
 
-        .main-content {
-            padding: 3rem 0;
+        .back-button {
+            position: absolute;
+            top: var(--spacing-lg);
+            left: var(--spacing-lg);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: var(--radius-full);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all var(--transition-normal);
+            z-index: 2;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
 
-        .summary-card {
+        /* Summary Stats */
+        .summary-stats {
             background: var(--white);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(253, 159, 39, 0.1);
-        }
-
-        .summary-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--pokeworks-light-gray);
-        }
-
-        .summary-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--pokeworks-black);
-        }
-
-        .match-score {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .score-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--white);
-            position: relative;
-        }
-
-        .score-circle.high {
-            background: linear-gradient(135deg, var(--success), #45a049);
-        }
-
-        .score-circle.medium {
-            background: linear-gradient(135deg, var(--warning), #f57c00);
-        }
-
-        .score-circle.low {
-            background: linear-gradient(135deg, var(--error), #d32f2f);
-        }
-
-        .score-text {
-            text-align: center;
-        }
-
-        .score-percentage {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .score-label {
-            font-size: 0.875rem;
-            opacity: 0.8;
-        }
-
-        .stats-grid {
+            margin: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
         }
 
-        .stat-card {
-            background: var(--pokeworks-light-gray);
-            padding: 1.5rem;
-            border-radius: 1rem;
+        .stat-item {
             text-align: center;
-            border: 1px solid rgba(253, 159, 39, 0.1);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--white);
-        }
-
-        .stat-icon.matched {
-            background: var(--success);
-        }
-
-        .stat-icon.missing {
-            background: var(--warning);
-        }
-
-        .stat-icon.unexpected {
-            background: var(--error);
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            color: var(--teal);
+            margin-bottom: var(--spacing-xs);
         }
 
         .stat-label {
-            color: var(--pokeworks-gray);
-            font-size: 0.875rem;
-        }
-
-        .ingredients-section {
-            background: var(--white);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(253, 159, 39, 0.1);
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--pokeworks-black);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .ingredients-grid {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .ingredient-category {
-            background: var(--pokeworks-light-gray);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            border-left: 4px solid;
-        }
-
-        .ingredient-category.matched {
-            border-left-color: var(--success);
-            background: rgba(76, 175, 80, 0.05);
-        }
-
-        .ingredient-category.missing {
-            border-left-color: var(--warning);
-            background: rgba(255, 152, 0, 0.05);
-        }
-
-        .ingredient-category.unexpected {
-            border-left-color: var(--error);
-            background: rgba(244, 67, 54, 0.05);
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .category-icon {
-            font-size: 1.2rem;
-        }
-
-        .ingredient-list {
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        .ingredient-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1rem;
-            background: var(--white);
-            border-radius: 0.5rem;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .ingredient-name {
+            font-size: 0.75rem;
+            color: var(--gray-500);
             font-weight: 500;
         }
 
-        .ingredient-confidence {
-            background: var(--pokeworks-light-gray);
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            color: var(--pokeworks-gray);
+        /* Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 var(--spacing-lg) var(--spacing-lg);
         }
 
-        .actions-section {
+        /* Section Headers */
+        .section-header {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: var(--spacing-sm);
+            margin: var(--spacing-lg) 0 var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 2px solid var(--gray-200);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--pokeworks-orange), var(--pokeworks-red));
-            color: var(--white);
-            box-shadow: 0 8px 25px rgba(253, 159, 39, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(253, 159, 39, 0.4);
-            background: linear-gradient(135deg, #ff8e1a, #ff2938);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--pokeworks-red);
-            border: 2px solid var(--pokeworks-red);
-        }
-
-        .btn-outline:hover {
-            background: var(--pokeworks-red);
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
             color: var(--white);
         }
 
-        .btn-secondary {
-            background: var(--pokeworks-light-gray);
-            color: var(--pokeworks-black);
-            border: 2px solid var(--pokeworks-gray);
+        .section-icon.success {
+            background: var(--success);
         }
 
-        .btn-secondary:hover {
-            background: var(--pokeworks-gray);
-            color: var(--white);
+        .section-icon.warning {
+            background: var(--warning);
         }
 
-        .receipt-section {
+        .section-icon.error {
+            background: var(--error);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .section-count {
+            background: var(--gray-200);
+            color: var(--gray-600);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Ingredient Items */
+        .ingredient-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .ingredient-item {
             background: var(--white);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(253, 159, 39, 0.1);
-        }
-
-        .receipt-text {
-            background: var(--pokeworks-light-gray);
-            padding: 1.5rem;
-            border-radius: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--pokeworks-black);
-            border: 1px solid rgba(253, 159, 39, 0.1);
-        }
-
-        .footer {
-            background: var(--pokeworks-black);
-            color: var(--white);
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-
-        .footer-text {
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-            
-            .header-title {
-                font-size: 1.5rem;
-            }
-            
-            .summary-header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions-section {
-                flex-direction: column;
-            }
-            
-            .btn {
-                justify-content: center;
-            }
-        }
-
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            position: relative;
             overflow: hidden;
         }
 
-        .floating-element {
+        .ingredient-item::before {
+            content: '';
             position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            transition: all var(--transition-normal);
         }
 
-        .floating-element:nth-child(1) {
+        .ingredient-item.success::before {
+            background: var(--success);
+        }
+
+        .ingredient-item.warning::before {
+            background: var(--warning);
+        }
+
+        .ingredient-item.error::before {
+            background: var(--error);
+        }
+
+        .ingredient-item:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .ingredient-item:hover::before {
+            width: 8px;
+        }
+
+        .ingredient-icon {
             width: 40px;
             height: 40px;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--white);
+            flex-shrink: 0;
         }
 
-        .floating-element:nth-child(2) {
-            width: 60px;
-            height: 60px;
-            top: 60%;
-            right: 15%;
-            animation-delay: 2s;
+        .ingredient-icon.success {
+            background: var(--success);
         }
 
-        .floating-element:nth-child(3) {
-            width: 30px;
-            height: 30px;
-            bottom: 30%;
-            left: 20%;
-            animation-delay: 4s;
+        .ingredient-icon.warning {
+            background: var(--warning);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+        .ingredient-icon.error {
+            background: var(--error);
+        }
+
+        .ingredient-content {
+            flex: 1;
+        }
+
+        .ingredient-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .ingredient-details {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: 0.875rem;
+        }
+
+        .ingredient-confidence {
+            color: var(--gray-600);
+        }
+
+        .ingredient-source {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .ingredient-source.receipt {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .ingredient-source.additional {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .ingredient-arrow {
+            color: var(--gray-400);
+            font-size: 1.2rem;
+            transition: all var(--transition-normal);
+        }
+
+        .ingredient-item:hover .ingredient-arrow {
+            color: var(--teal);
+            transform: translateX(4px);
+        }
+
+        /* Overall Score */
+        .overall-score {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .score-number {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .score-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .score-description {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* Bottom Actions */
+        .bottom-actions {
+            background: var(--white);
+            padding: var(--spacing-lg);
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .action-button {
+            flex: 1;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-export {
+            background: var(--teal);
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-export:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-new {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-new:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        /* Status Bar */
+        .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--spacing-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            z-index: 3;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .battery {
+            width: 24px;
+            height: 12px;
+            border: 1px solid var(--gray-400);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .battery::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 3px;
+            width: 2px;
+            height: 6px;
+            background: var(--gray-400);
+            border-radius: 0 1px 1px 0;
+        }
+
+        .battery-fill {
+            width: 80%;
+            height: 100%;
+            background: var(--success);
+            border-radius: 1px;
+        }
+
+        /* Home Indicator */
+        .home-indicator {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 134px;
+            height: 5px;
+            background: var(--gray-300);
+            border-radius: var(--radius-full);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideInUp 0.4s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-        </div>
-        
-        <div class="header-content">
-            <div class="logo">PW</div>
-            <h1 class="header-title">Analysis Complete</h1>
-            <p class="header-subtitle">Your bowl has been analyzed successfully</p>
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="container">
-            <!-- Summary Card -->
-            <div class="summary-card">
-                <div class="summary-header">
-                    <h2 class="summary-title">Overall Match Score</h2>
-                    <div class="match-score">
-                        <div class="score-circle {{ 'high' if match_percentage >= 80 else 'medium' if match_percentage >= 60 else 'low' }}">
-                            {{ match_percentage }}%
-                        </div>
-                        <div class="score-text">
-                            <div class="score-percentage">{{ match_percentage }}%</div>
-                            <div class="score-label">Match Rate</div>
-                        </div>
-                    </div>
+    <div class="mobile-frame">
+        <div class="screen">
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-left">
+                    <span>9:41</span>
                 </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon matched">✅</div>
-                        <div class="stat-number">{{ matched_count }}</div>
-                        <div class="stat-label">Matched Ingredients</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon missing">⚠️</div>
-                        <div class="stat-number">{{ missing_count }}</div>
-                        <div class="stat-label">Missing Ingredients</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon unexpected">❌</div>
-                        <div class="stat-number">{{ unexpected_count }}</div>
-                        <div class="stat-label">Unexpected Items</div>
+                <div class="status-right">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <div class="battery">
+                        <div class="battery-fill"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Ingredients Analysis -->
-            <div class="ingredients-section">
-                <h2 class="section-title">
-                    <span>🍜</span>
-                    Ingredient Analysis
-                </h2>
+            <!-- Header -->
+            <div class="header">
+                <button class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="header-content">
+                    <h1 class="header-title">Analysis Complete</h1>
+                    <p class="header-subtitle">Your poke bowl verification results</p>
+                </div>
+            </div>
 
-                <div class="ingredients-grid">
-                    {% if matched_ingredients %}
-                    <div class="ingredient-category matched">
-                        <div class="category-header">
-                            <span class="category-icon">✅</span>
-                            <span>Matched Ingredients ({{ matched_ingredients|length }})</span>
-                        </div>
-                        <div class="ingredient-list">
-                            {% for ingredient in matched_ingredients %}
-                            <div class="ingredient-item">
-                                <span class="ingredient-name">{{ ingredient.name }}</span>
-                                <span class="ingredient-confidence">{{ ingredient.confidence }}%</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
+            <!-- Summary Stats -->
+            <div class="summary-stats slide-in">
+                <div class="stat-item">
+                    <div class="stat-number">{{ matched_ingredients|length }}</div>
+                    <div class="stat-label">Matched</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ missing_ingredients|length }}</div>
+                    <div class="stat-label">Missing</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ unexpected_ingredients|length }}</div>
+                    <div class="stat-label">Unexpected</div>
+                </div>
+            </div>
 
-                    {% if missing_ingredients %}
-                    <div class="ingredient-category missing">
-                        <div class="category-header">
-                            <span class="category-icon">⚠️</span>
-                            <span>Missing Ingredients ({{ missing_ingredients|length }})</span>
-                        </div>
-                        <div class="ingredient-list">
-                            {% for ingredient in missing_ingredients %}
-                            <div class="ingredient-item">
-                                <span class="ingredient-name">{{ ingredient.name }}</span>
-                                <span class="ingredient-confidence">Expected</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if unexpected_ingredients %}
-                    <div class="ingredient-category unexpected">
-                        <div class="category-header">
-                            <span class="category-icon">❌</span>
-                            <span>Unexpected Ingredients ({{ unexpected_ingredients|length }})</span>
-                        </div>
-                        <div class="ingredient-list">
-                            {% for ingredient in unexpected_ingredients %}
-                            <div class="ingredient-item">
-                                <span class="ingredient-name">{{ ingredient.name }}</span>
-                                <span class="ingredient-confidence">{{ ingredient.confidence }}%</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+            <!-- Overall Score -->
+            <div class="overall-score slide-in">
+                <div class="score-number">{{ match_percentage }}%</div>
+                <div class="score-label">Overall Match Score</div>
+                <div class="score-description">
+                    {% if match_percentage >= 80 %}
+                        Excellent accuracy with minimal discrepancies
+                    {% elif match_percentage >= 60 %}
+                        Good accuracy with minor discrepancies
+                    {% elif match_percentage >= 40 %}
+                        Fair accuracy with some discrepancies
+                    {% else %}
+                        Poor accuracy with significant discrepancies
                     {% endif %}
                 </div>
             </div>
 
-            <!-- Receipt Information -->
-            {% if receipt_ingredients %}
-            <div class="receipt-section">
-                <h2 class="section-title">
-                    <span>📄</span>
-                    Receipt Ingredients
-                </h2>
-                <div class="receipt-text">
-                    {% for ingredient in receipt_ingredients %}
-                    <div>{{ ingredient }}</div>
+            <!-- Content -->
+            <div class="content">
+                <!-- Matched Ingredients -->
+                <div class="section-header slide-in">
+                    <div class="section-icon success">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="section-title">Matched Ingredients</div>
+                    <div class="section-count">{{ matched_ingredients|length }}</div>
+                </div>
+                <div class="ingredient-list">
+                    {% for ingredient in matched_ingredients %}
+                    <div class="ingredient-item success slide-in">
+                        <div class="ingredient-icon success">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="ingredient-content">
+                            <div class="ingredient-name">{{ ingredient.ingredient }}</div>
+                            <div class="ingredient-details">
+                                <span class="ingredient-confidence">{{ ingredient.confidence }}% confidence</span>
+                                <span class="ingredient-source receipt">{{ ingredient.source|title }}</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right ingredient-arrow"></i>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Missing Ingredients -->
+                <div class="section-header slide-in">
+                    <div class="section-icon warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="section-title">Missing Ingredients</div>
+                    <div class="section-count">{{ missing_ingredients|length }}</div>
+                </div>
+                <div class="ingredient-list">
+                    {% for ingredient in missing_ingredients %}
+                    <div class="ingredient-item warning slide-in">
+                        <div class="ingredient-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="ingredient-content">
+                            <div class="ingredient-name">{{ ingredient }}</div>
+                            <div class="ingredient-details">
+                                <span class="ingredient-confidence">Not detected</span>
+                                <span class="ingredient-source receipt">Receipt</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right ingredient-arrow"></i>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Unexpected Ingredients -->
+                <div class="section-header slide-in">
+                    <div class="section-icon error">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <div class="section-title">Unexpected Ingredients</div>
+                    <div class="section-count">{{ unexpected_ingredients|length }}</div>
+                </div>
+                <div class="ingredient-list">
+                    {% for ingredient in unexpected_ingredients %}
+                    <div class="ingredient-item error slide-in">
+                        <div class="ingredient-icon error">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="ingredient-content">
+                            <div class="ingredient-name">{{ ingredient }}</div>
+                            <div class="ingredient-details">
+                                <span class="ingredient-confidence">Detected in bowl</span>
+                                <span class="ingredient-source additional">Additional</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right ingredient-arrow"></i>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
-            {% endif %}
 
-            <!-- Action Buttons -->
-            <div class="actions-section">
-                <a href="/" class="btn btn-primary">
-                    <i class="fas fa-plus"></i>
-                    New Analysis
-                </a>
-                <button class="btn btn-outline" onclick="exportReport()">
+            <!-- Bottom Actions -->
+            <div class="bottom-actions">
+                <button class="action-button btn-export">
                     <i class="fas fa-download"></i>
                     Export Report
                 </button>
-                <button class="btn btn-secondary" onclick="shareResults()">
-                    <i class="fas fa-share"></i>
-                    Share Results
+                <button class="action-button btn-new">
+                    <i class="fas fa-plus"></i>
+                    New Check
                 </button>
             </div>
-        </div>
-    </div>
 
-    <div class="footer">
-        <div class="footer-text">
-            © 2024 PokeWorks QA. Powered by advanced AI technology.
+            <!-- Home Indicator -->
+            <div class="home-indicator"></div>
         </div>
     </div>
 
     <script>
-        function exportReport() {
-            // Simulate export functionality
-            const reportData = {
-                matchPercentage: {{ match_percentage }},
-                matchedIngredients: {{ matched_ingredients|tojson }},
-                missingIngredients: {{ missing_ingredients|tojson }},
-                unexpectedIngredients: {{ unexpected_ingredients|tojson }},
-                timestamp: new Date().toISOString()
-            };
-            
-            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
+        // Back button functionality
+        document.querySelector('.back-button').addEventListener('click', function() {
+            window.history.back();
+        });
+
+        // Export Report button
+        document.querySelector('.btn-export').addEventListener('click', function() {
+            // Create a simple text report
+            const report = `PokeWorks QA Report
+========================
+Filename: {{ filename }}
+Match Score: {{ match_percentage }}%
+
+Matched Ingredients ({{ matched_ingredients|length }}):
+{% for ingredient in matched_ingredients %}- {{ ingredient.ingredient }} ({{ ingredient.confidence }}% confidence)
+{% endfor %}
+
+Missing Ingredients ({{ missing_ingredients|length }}):
+{% for ingredient in missing_ingredients %}- {{ ingredient }}
+{% endfor %}
+
+Unexpected Ingredients ({{ unexpected_ingredients|length }}):
+{% for ingredient in unexpected_ingredients %}- {{ ingredient }}
+{% endfor %}
+
+Generated on: ${new Date().toLocaleString()}`;
+
+            // Download as text file
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'pokeworks-qa-report.json';
+            a.download = 'pokeworks-report-{{ filename }}.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showMessage('Report exported successfully!');
-        }
+            window.URL.revokeObjectURL(url);
+        });
 
-        function shareResults() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'PokeWorks QA Results',
-                    text: `My bowl analysis: ${match_percentage}% match rate`,
-                    url: window.location.href
-                });
-            } else {
-                // Fallback for browsers that don't support Web Share API
-                navigator.clipboard.writeText(window.location.href);
-                showMessage('Link copied to clipboard!');
-            }
-        }
-
-        function showMessage(message) {
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = message;
-            messageDiv.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: var(--pokeworks-red);
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: 0.5rem;
-                font-weight: 500;
-                z-index: 1000;
-                animation: fadeInOut 2s ease-in-out;
-            `;
-            
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-                document.body.removeChild(messageDiv);
-            }, 2000);
-        }
-
-        // Add CSS animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInOut {
-                0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-                50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            }
-        `;
-        document.head.appendChild(style);
+        // New Check button
+        document.querySelector('.btn-new').addEventListener('click', function() {
+            window.location.href = '/';
+        });
     </script>
 </body>
 </html> 

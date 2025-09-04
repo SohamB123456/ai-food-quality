@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍜 PokeWorks QA - Design System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #312F2E;
+            background: #FFFFFF;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, #FD9F27 0%, #F63C49 100%);
+            color: white;
+            border-radius: 0 0 2rem 2rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: #FFFFFF;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #312F2E;
+            border-bottom: 3px solid #FD9F27;
+            padding-bottom: 0.5rem;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .color-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .color-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .color-swatch {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .color-info {
+            padding: 1.5rem;
+        }
+
+        .color-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-hex {
+            font-family: 'Monaco', 'Menlo', monospace;
+            color: #818181;
+            font-size: 0.9rem;
+        }
+
+        .typography-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .font-example {
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background: #f8f9fa;
+            border-left: 4px solid #FD9F27;
+        }
+
+        .font-example h3 {
+            margin-bottom: 0.5rem;
+            color: #312F2E;
+        }
+
+        .font-example p {
+            color: #818181;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .component-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        .component-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #312F2E;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #F63C49;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff2938;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(246, 60, 73, 0.3);
+        }
+
+        .btn-secondary {
+            background: #FD9F27;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #ff8e1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(253, 159, 39, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #F63C49;
+            border: 2px solid #F63C49;
+        }
+
+        .btn-outline:hover {
+            background: #F63C49;
+            color: white;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #312F2E;
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #FD9F27;
+            box-shadow: 0 0 0 3px rgba(253, 159, 39, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.25rem;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: #e9ecef;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FD9F27, #F63C49);
+            border-radius: 0.25rem;
+            transition: width 0.3s ease;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .icon-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #f8f9fa;
+            transition: background 0.3s ease;
+        }
+
+        .icon-item:hover {
+            background: #e9ecef;
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #F63C49;
+        }
+
+        .spacing-examples {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .spacing-box {
+            background: #FD9F27;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+
+        .logo-section {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo-placeholder {
+            width: 120px;
+            height: 120px;
+            background: #F63C49;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .color-palette {
+                grid-template-columns: 1fr;
+            }
+            
+            .component-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍜 PokeWorks QA</h1>
+            <p>Official Design System - Quality Assurance App</p>
+        </div>
+
+        <!-- Brand Colors -->
+        <div class="section">
+            <h2>Brand Colors</h2>
+            <div class="color-palette">
+                <div class="color-card">
+                    <div class="color-swatch" style="background: #F63C49;">Signature Red</div>
+                    <div class="color-info">
+                        <div class="color-name">Signature Red</div>
+                        <div class="color-hex">#F63C49</div>
+                        <div class="color-description">Primary CTA buttons, alerts, highlights</div>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background: #FD9F27;">Primary Orange</div>
+                    <div class="color-info">
+                        <div class="color-name">Primary Orange</div>
+                        <div class="color-hex">#FD9F27</div>
+                        <div class="color-description">Secondary actions, accents, progress</div>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background: #312F2E; color: white;">Deep Black</div>
+                    <div class="color-info">
+                        <div class="color-name">Deep Black</div>
+                        <div class="color-hex">#312F2E</div>
+                        <div class="color-description">Headings, primary text</div>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background: #818181; color: white;">Body Gray</div>
+                    <div class="color-info">
+                        <div class="color-name">Body Gray</div>
+                        <div class="color-hex">#818181</div>
+                        <div class="color-description">Body text, secondary information</div>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background: #FFFFFF; color: #312F2E; border: 2px solid #e9ecef;">Pure White</div>
+                    <div class="color-info">
+                        <div class="color-name">Pure White</div>
+                        <div class="color-hex">#FFFFFF</div>
+                        <div class="color-description">Backgrounds, cards, containers</div>
+                    </div>
+                </div>
+                
+                <div class="color-card">
+                    <div class="color-swatch" style="background: #f8f9fa; color: #312F2E;">Light Gray</div>
+                    <div class="color-info">
+                        <div class="color-name">Light Gray</div>
+                        <div class="color-hex">#f8f9fa</div>
+                        <div class="color-description">Subtle backgrounds, disabled states</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="section">
+            <h2>Typography</h2>
+            <div class="typography-grid">
+                <div class="font-example">
+                    <h3 style="font-size: 2.5rem; font-weight: 700; color: #312F2E;">Display Heading</h3>
+                    <p>Inter Bold, 40px</p>
+                    <p>Used for hero sections and main headlines</p>
+                </div>
+                
+                <div class="font-example">
+                    <h3 style="font-size: 2rem; font-weight: 600; color: #312F2E;">Section Heading</h3>
+                    <p>Inter SemiBold, 32px</p>
+                    <p>Used for section titles and major content breaks</p>
+                </div>
+                
+                <div class="font-example">
+                    <h3 style="font-size: 1.5rem; font-weight: 600; color: #312F2E;">Card Heading</h3>
+                    <p>Inter SemiBold, 24px</p>
+                    <p>Used for card titles and important content</p>
+                </div>
+                
+                <div class="font-example">
+                    <h3 style="font-size: 1.125rem; font-weight: 500; color: #312F2E;">Body Large</h3>
+                    <p>Inter Medium, 18px</p>
+                    <p>Used for emphasized body text and labels</p>
+                </div>
+                
+                <div class="font-example">
+                    <h3 style="font-size: 1rem; font-weight: 400; color: #312F2E;">Body Regular</h3>
+                    <p>Inter Regular, 16px</p>
+                    <p>Used for primary body text and descriptions</p>
+                </div>
+                
+                <div class="font-example">
+                    <h3 style="font-size: 0.875rem; font-weight: 400; color: #818181;">Body Small</h3>
+                    <p>Inter Regular, 14px</p>
+                    <p>Used for captions, metadata, and secondary text</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo & Branding -->
+        <div class="section">
+            <h2>Logo & Branding</h2>
+            <div class="logo-section">
+                <div class="logo-placeholder">PW</div>
+                <h3>PokeWorks Circle Logo</h3>
+                <p>Official PokeWorks logo should be used in splash screens and headers</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #818181;">
+                    Brand Guidelines: Use official PokeWorks logo with proper spacing and sizing
+                </p>
+            </div>
+        </div>
+
+        <!-- Components -->
+        <div class="section">
+            <h2>UI Components</h2>
+            <div class="component-grid">
+                <!-- Buttons -->
+                <div class="component-card">
+                    <div class="component-title">Buttons</div>
+                    <button class="btn btn-primary">Primary Action</button>
+                    <button class="btn btn-secondary">Secondary Action</button>
+                    <button class="btn btn-outline">Outline Button</button>
+                </div>
+
+                <!-- Form Elements -->
+                <div class="component-card">
+                    <div class="component-title">Form Elements</div>
+                    <div class="input-group">
+                        <label>Input Field</label>
+                        <input type="text" class="input" placeholder="Enter text here...">
+                    </div>
+                    <div class="input-group">
+                        <label>Text Area</label>
+                        <textarea class="input" rows="3" placeholder="Enter description..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Badges -->
+                <div class="component-card">
+                    <div class="component-title">Status Badges</div>
+                    <span class="badge badge-success">✓ Matched</span>
+                    <span class="badge badge-warning">⚠ Missing</span>
+                    <span class="badge badge-error">❌ Unexpected</span>
+                </div>
+
+                <!-- Cards -->
+                <div class="component-card">
+                    <div class="component-title">Cards</div>
+                    <div class="card">
+                        <h4>Ingredient Card</h4>
+                        <p>Display ingredient information with status indicators</p>
+                    </div>
+                </div>
+
+                <!-- Progress -->
+                <div class="component-card">
+                    <div class="component-title">Progress Indicators</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                    <p style="text-align: center; margin-top: 0.5rem; color: #818181;">75% Complete</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Icons -->
+        <div class="section">
+            <h2>Iconography</h2>
+            <div class="icon-grid">
+                <div class="icon-item">
+                    <div class="icon">📷</div>
+                    <div>Camera</div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon">🔍</div>
+                    <div>Search</div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon">✅</div>
+                    <div>Check</div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon">⚠️</div>
+                    <div>Warning</div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon">❌</div>
+                    <div>Error</div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon">📊</div>
+                    <div>Analytics</div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon">⚙️</div>
+                    <div>Settings</div>
+                </div>
+                <div class="icon-item">
+                    <div class="icon">📱</div>
+                    <div>Mobile</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spacing -->
+        <div class="section">
+            <h2>Spacing System</h2>
+            <div class="spacing-examples">
+                <div class="spacing-box" style="margin: 0.5rem 0;">8px - Extra Small</div>
+                <div class="spacing-box" style="margin: 1rem 0;">16px - Small</div>
+                <div class="spacing-box" style="margin: 1.5rem 0;">24px - Medium</div>
+                <div class="spacing-box" style="margin: 2rem 0;">32px - Large</div>
+                <div class="spacing-box" style="margin: 3rem 0;">48px - Extra Large</div>
+            </div>
+        </div>
+
+        <!-- Design Principles -->
+        <div class="section">
+            <h2>Design Principles</h2>
+            <div class="component-grid">
+                <div class="component-card">
+                    <h4>🎯 Mobile-First</h4>
+                    <p>Design for mobile devices first, then scale up for larger screens</p>
+                </div>
+                <div class="component-card">
+                    <h4>⚡ Fast & Responsive</h4>
+                    <p>Optimize for speed and provide immediate feedback to user actions</p>
+                </div>
+                <div class="component-card">
+                    <h4>🎨 Brand Consistency</h4>
+                    <p>Maintain PokeWorks brand identity across all touchpoints</p>
+                </div>
+                <div class="component-card">
+                    <h4>♿ Accessibility</h4>
+                    <p>Ensure the app is usable by people with diverse abilities</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

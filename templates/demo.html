@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeWorks QA - Demo Navigation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #008080;
+            --teal-light: #00A0A0;
+            --teal-dark: #006666;
+            --coral: #FF6B6B;
+            --coral-light: #FF8E8E;
+            --coral-dark: #E55A5A;
+            --white: #FFFFFF;
+            --black: #000000;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--white);
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .demo-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--teal);
+        }
+
+        .demo-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-card p {
+            color: var(--gray-600);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .demo-card .icon {
+            width: 24px;
+            height: 24px;
+            color: var(--teal);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--teal-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            transform: translateY(-2px);
+        }
+
+        .btn-coral {
+            background: var(--coral);
+            color: var(--white);
+        }
+
+        .btn-coral:hover {
+            background: var(--coral-dark);
+            transform: translateY(-2px);
+        }
+
+        .features-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .features-section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--gray-800);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .feature:hover {
+            background: var(--gray-100);
+        }
+
+        .feature .icon {
+            width: 20px;
+            height: 20px;
+            color: var(--teal);
+        }
+
+        .feature span {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .mobile-preview {
+            background: var(--gray-900);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .mobile-preview h3 {
+            color: var(--white);
+            margin-bottom: 15px;
+            font-family: var(--font-heading);
+        }
+
+        .mobile-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .mobile-btn {
+            background: var(--teal);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .mobile-btn:hover {
+            background: var(--teal-light);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mobile-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍣 PokeWorks QA System</h1>
+            <p>Comprehensive Demo & Testing Interface</p>
+        </div>
+
+        <div class="demo-grid">
+            <!-- Main Web App -->
+            <div class="demo-card">
+                <h3><i class="fas fa-upload icon"></i>Main Web Application</h3>
+                <p>Upload images and get real-time analysis with our full-featured web interface. Perfect for desktop demos and testing.</p>
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-external-link-alt"></i>
+                    Launch Web App
+                </a>
+            </div>
+
+            <!-- Mobile App Screens -->
+            <div class="demo-card">
+                <h3><i class="fas fa-mobile-alt icon"></i>Mobile App Screens</h3>
+                <p>Experience our mobile-optimized interface designed for restaurant staff. Beautiful, responsive design with touch-friendly controls.</p>
+                <div class="mobile-preview">
+                    <h3>📱 Mobile Interface</h3>
+                    <div class="mobile-buttons">
+                        <a href="/splash" class="mobile-btn">Splash Screen</a>
+                        <a href="/split-preview" class="mobile-btn">Split Preview</a>
+                        <a href="/detail-overlay" class="mobile-btn">Detail Overlay</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Command Line Tools -->
+            <div class="demo-card">
+                <h3><i class="fas fa-terminal icon"></i>Command Line Tools</h3>
+                <p>Powerful command-line utilities for batch processing, testing, and development. Perfect for automation and integration.</p>
+                <a href="#" onclick="showCLIInstructions()" class="btn btn-secondary">
+                    <i class="fas fa-code"></i>
+                    CLI Instructions
+                </a>
+            </div>
+
+            <!-- API Endpoints -->
+            <div class="demo-card">
+                <h3><i class="fas fa-plug icon"></i>API Endpoints</h3>
+                <p>RESTful API endpoints for integration with other systems. Upload images and get structured JSON responses.</p>
+                <a href="#" onclick="showAPIInfo()" class="btn btn-coral">
+                    <i class="fas fa-info-circle"></i>
+                    API Documentation
+                </a>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2>🚀 System Capabilities</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-brain icon"></i>
+                    <span>AI-Powered Image Analysis</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-cut icon"></i>
+                    <span>Automatic Image Splitting</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-eye icon"></i>
+                    <span>Advanced OCR Text Extraction</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-search icon"></i>
+                    <span>Smart Ingredient Matching</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line icon"></i>
+                    <span>Real-time Processing</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-download icon"></i>
+                    <span>Export & Reporting</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-layer-group icon"></i>
+                    <span>Batch Processing</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-mobile-alt icon"></i>
+                    <span>Mobile-Optimized UI</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCLIInstructions() {
+            alert(`Command Line Demo Instructions:
+
+1. Fuzzy Matching Demo:
+   python fuzzy_matching.py
+
+2. Auto Crop Detection:
+   python auto_crop_detection.py
+
+3. Comprehensive Demo:
+   python demo.py
+
+4. Batch Processing:
+   python batch_process.py input_dir -o output_dir
+
+5. OCR Testing:
+   python simple_ocr_test.py
+
+All commands should be run with: source .venv/bin/activate`);
+        }
+
+        function showAPIInfo() {
+            alert(`API Endpoints:
+
+POST /upload
+- Upload image for analysis
+- Returns: JSON with processing results
+
+GET /results/<filename>
+- View results for uploaded image
+- Returns: HTML results page
+
+GET /mobile-results/<filename>
+- Mobile-optimized results view
+- Returns: Mobile HTML results
+
+GET /splash
+- Mobile splash screen
+
+GET /split-preview
+- Mobile split preview screen
+
+GET /detail-overlay
+- Mobile detail overlay screen
+
+Base URL: http://localhost:5001`);
+        }
+    </script>
+</body>
+</html>
+

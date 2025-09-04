@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeWorks QA - Design System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Brand Colors */
+            --teal: #008080;
+            --teal-light: #00A0A0;
+            --teal-dark: #006666;
+            --coral: #FF6B6B;
+            --coral-light: #FF8E8E;
+            --coral-dark: #E55A5A;
+            --white: #FFFFFF;
+            --black: #000000;
+            
+            /* Semantic Colors */
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --info: #3B82F6;
+            
+            /* Neutral Colors */
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            
+            /* Typography */
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+
+        .section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--teal);
+            margin-bottom: var(--spacing-lg);
+            border-bottom: 3px solid var(--coral);
+            padding-bottom: var(--spacing-sm);
+        }
+
+        .subsection-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .color-card {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .color-name {
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .color-hex {
+            font-family: monospace;
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        /* Typography */
+        .typography-section {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+
+        .type-example {
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            border-left: 4px solid var(--teal);
+            background: var(--gray-50);
+            border-radius: var(--radius-sm);
+        }
+
+        .type-label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* Buttons */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .btn {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--teal);
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background: var(--teal-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--coral);
+            color: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover {
+            background: var(--coral-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--teal);
+            border: 2px solid var(--teal);
+        }
+
+        .btn-outline:hover {
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .btn-large {
+            padding: var(--spacing-lg) var(--spacing-xl);
+            font-size: 1.1rem;
+        }
+
+        .btn-small {
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 0.9rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Icons */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .icon-item {
+            text-align: center;
+            padding: var(--spacing-md);
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .icon-item i {
+            font-size: 2rem;
+            color: var(--teal);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .icon-name {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+        }
+
+        /* Mobile Preview */
+        .mobile-preview {
+            width: 375px;
+            height: 812px;
+            background: var(--gray-900);
+            border-radius: var(--radius-xl);
+            padding: 8px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .mobile-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--teal), var(--coral));
+            transition: width var(--transition-slow);
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .slide-in {
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-title">PokeWorks QA Design System</h1>
+        
+        <!-- Color Palette -->
+        <section class="section">
+            <h2 class="subsection-title">Color Palette</h2>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--teal);">Teal</div>
+                    <div class="color-name">Primary Teal</div>
+                    <div class="color-hex">#008080</div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--coral);">Coral</div>
+                    <div class="color-name">Accent Coral</div>
+                    <div class="color-hex">#FF6B6B</div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--white); color: var(--gray-800);">White</div>
+                    <div class="color-name">Background</div>
+                    <div class="color-hex">#FFFFFF</div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--success);">Success</div>
+                    <div class="color-name">Success Green</div>
+                    <div class="color-hex">#10B981</div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--warning);">Warning</div>
+                    <div class="color-name">Warning Orange</div>
+                    <div class="color-hex">#F59E0B</div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--error);">Error</div>
+                    <div class="color-name">Error Red</div>
+                    <div class="color-hex">#EF4444</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="section">
+            <h2 class="subsection-title">Typography</h2>
+            <div class="typography-section">
+                <div class="type-example">
+                    <div class="type-label">Heading 1 - Montserrat Bold</div>
+                    <h1 style="font-family: var(--font-heading); font-weight: 700; font-size: 2.5rem; color: var(--teal);">
+                        Verify Bowl & Receipt
+                    </h1>
+                </div>
+                <div class="type-example">
+                    <div class="type-label">Heading 2 - Montserrat SemiBold</div>
+                    <h2 style="font-family: var(--font-heading); font-weight: 600; font-size: 2rem; color: var(--gray-700);">
+                        Analysis Results
+                    </h2>
+                </div>
+                <div class="type-example">
+                    <div class="type-label">Heading 3 - Montserrat Medium</div>
+                    <h3 style="font-family: var(--font-heading); font-weight: 500; font-size: 1.5rem; color: var(--gray-700);">
+                        Matched Ingredients
+                    </h3>
+                </div>
+                <div class="type-example">
+                    <div class="type-label">Body Text - Open Sans Regular</div>
+                    <p style="font-family: var(--font-body); font-weight: 400; font-size: 1rem; color: var(--gray-600);">
+                        Capture your poke bowl and receipt in one photo. Our AI will automatically split and analyze them to verify accuracy.
+                    </p>
+                </div>
+                <div class="type-example">
+                    <div class="type-label">Caption - Open Sans Light</div>
+                    <p style="font-family: var(--font-body); font-weight: 300; font-size: 0.875rem; color: var(--gray-500);">
+                        Tap to adjust the split line between bowl and receipt
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <section class="section">
+            <h2 class="subsection-title">Buttons</h2>
+            <div class="button-grid">
+                <button class="btn btn-primary btn-large">Get Started</button>
+                <button class="btn btn-secondary">Capture Photo</button>
+                <button class="btn btn-outline">Retake</button>
+                <button class="btn btn-primary btn-small">Next</button>
+                <button class="btn btn-secondary btn-small">Export</button>
+            </div>
+        </section>
+
+        <!-- Status Indicators -->
+        <section class="section">
+            <h2 class="subsection-title">Status Indicators</h2>
+            <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+                <span class="status-indicator status-success">
+                    <i class="fas fa-check" style="margin-right: var(--spacing-xs);"></i>
+                    Matched
+                </span>
+                <span class="status-indicator status-warning">
+                    <i class="fas fa-exclamation-triangle" style="margin-right: var(--spacing-xs);"></i>
+                    Missing
+                </span>
+                <span class="status-indicator status-error">
+                    <i class="fas fa-times" style="margin-right: var(--spacing-xs);"></i>
+                    Unexpected
+                </span>
+            </div>
+        </section>
+
+        <!-- Icons -->
+        <section class="section">
+            <h2 class="subsection-title">Icon Library</h2>
+            <div class="icon-grid">
+                <div class="icon-item">
+                    <i class="fas fa-camera"></i>
+                    <div class="icon-name">Camera</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="icon-name">Success</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div class="icon-name">Warning</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-times-circle"></i>
+                    <div class="icon-name">Error</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-utensils"></i>
+                    <div class="icon-name">Bowl</div>
+                </div>
+                <i class="fas fa-receipt"></i>
+                <div class="icon-name">Receipt</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-share"></i>
+                    <div class="icon-name">Share</div>
+                </div>
+                <div class="icon-item">
+                    <i class="fas fa-download"></i>
+                    <div class="icon-name">Export</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Bar -->
+        <section class="section">
+            <h2 class="subsection-title">Progress Indicators</h2>
+            <div style="max-width: 400px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%;"></div>
+                </div>
+                <p style="margin-top: var(--spacing-sm); color: var(--gray-600);">Step 3 of 4: Analyzing...</p>
+            </div>
+        </section>
+
+        <!-- Mobile Preview Frame -->
+        <section class="section">
+            <h2 class="subsection-title">Mobile Preview Frame</h2>
+            <div class="mobile-preview">
+                <div class="mobile-screen">
+                    <!-- This will be used for screen mockups -->
+                    <div style="padding: var(--spacing-lg); text-align: center; color: var(--gray-500);">
+                        <i class="fas fa-mobile-alt" style="font-size: 3rem; margin-bottom: var(--spacing-md);"></i>
+                        <p>Mobile screen mockups will be placed here</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html> 

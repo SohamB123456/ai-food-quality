@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍜 PokeWorks QA - Split Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: #312F2E;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FD9F27 0%, #F63C49 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .preview-container {
+            padding: 1.5rem;
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #312F2E;
+            text-align: center;
+        }
+
+        .preview-subtitle {
+            text-align: center;
+            color: #818181;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .split-view {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            background: #f8f9fa;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #e9ecef 25%, transparent 25%), 
+                        linear-gradient(-45deg, #e9ecef 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #e9ecef 75%), 
+                        linear-gradient(-45deg, transparent 75%, #e9ecef 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .receipt-side {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: rgba(253, 159, 39, 0.1);
+            border-right: 3px solid #FD9F27;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.3s ease;
+        }
+
+        .bowl-side {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: rgba(246, 60, 73, 0.1);
+            border-left: 3px solid #F63C49;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: width 0.3s ease;
+        }
+
+        .divider {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, #FD9F27, #F63C49);
+            cursor: ew-resize;
+            transform: translateX(-50%);
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .divider::before {
+            content: '⋮';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .side-label {
+            position: absolute;
+            top: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .receipt-label {
+            left: 1rem;
+            background: #FD9F27;
+        }
+
+        .bowl-label {
+            right: 1rem;
+            background: #F63C49;
+        }
+
+        .mock-content {
+            text-align: center;
+            color: #818181;
+            font-size: 0.9rem;
+        }
+
+        .mock-content.receipt {
+            color: #FD9F27;
+        }
+
+        .mock-content.bowl {
+            color: #F63C49;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #F63C49;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff2938;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(246, 60, 73, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #F63C49;
+            border: 2px solid #F63C49;
+        }
+
+        .btn-outline:hover {
+            background: #F63C49;
+            color: white;
+        }
+
+        .auto-split-info {
+            background: rgba(253, 159, 39, 0.1);
+            border-left: 4px solid #FD9F27;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #312F2E;
+        }
+
+        .info-text {
+            font-size: 0.875rem;
+            color: #818181;
+            line-height: 1.5;
+        }
+
+        .adjustment-tips {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tips-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #312F2E;
+        }
+
+        .tips-list {
+            list-style: none;
+            font-size: 0.875rem;
+            color: #818181;
+        }
+
+        .tips-list li {
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-list li::before {
+            content: '💡';
+            font-size: 1rem;
+        }
+
+        .split-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 0.5rem;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 480px) {
+            .split-view {
+                height: 40vh;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button" onclick="history.back()">←</button>
+        <h1>Auto-Split Preview</h1>
+        <div style="width: 40px;"></div>
+    </div>
+
+    <div class="preview-container">
+        <div class="split-status">
+            <span class="status-icon">✅</span>
+            <span>Auto-split successful! Adjust if needed.</span>
+        </div>
+
+        <div class="preview-title">Review Split Results</div>
+        <div class="preview-subtitle">Drag the divider to adjust the split between receipt and bowl</div>
+
+        <div class="split-view" id="splitView">
+            <div class="image-container">
+                <div class="receipt-side" id="receiptSide">
+                    <div class="side-label receipt-label">Receipt</div>
+                    <div class="mock-content receipt">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📄</div>
+                        <div>Receipt Area</div>
+                        <div style="font-size: 0.8rem; margin-top: 0.5rem;">OCR will extract text here</div>
+                    </div>
+                </div>
+                
+                <div class="bowl-side" id="bowlSide">
+                    <div class="side-label bowl-label">Bowl</div>
+                    <div class="mock-content bowl">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🍜</div>
+                        <div>Bowl Area</div>
+                        <div style="font-size: 0.8rem; margin-top: 0.5rem;">AI will analyze ingredients here</div>
+                    </div>
+                </div>
+                
+                <div class="divider" id="divider"></div>
+            </div>
+        </div>
+
+        <div class="auto-split-info">
+            <div class="info-title">🤖 AI Auto-Split</div>
+            <div class="info-text">
+                Our AI automatically detected and separated the receipt and bowl areas. 
+                The split looks accurate, but you can adjust it manually if needed.
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-outline" onclick="retakePhoto()">Retake Photo</button>
+            <button class="btn btn-primary" onclick="confirmSplit()">Confirm Split</button>
+        </div>
+
+        <div class="adjustment-tips">
+            <div class="tips-title">🎯 Adjustment Tips</div>
+            <ul class="tips-list">
+                <li>Drag the divider to fine-tune the split</li>
+                <li>Ensure receipt text is fully captured</li>
+                <li>Make sure the bowl is clearly visible</li>
+                <li>Check that no important details are cut off</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let isDragging = false;
+        let startX = 0;
+        let startLeft = 0;
+
+        const splitView = document.getElementById('splitView');
+        const divider = document.getElementById('divider');
+        const receiptSide = document.getElementById('receiptSide');
+        const bowlSide = document.getElementById('bowlSide');
+
+        // Mouse events for desktop
+        divider.addEventListener('mousedown', startDrag);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDrag);
+
+        // Touch events for mobile
+        divider.addEventListener('touchstart', startDrag);
+        document.addEventListener('touchmove', drag);
+        document.addEventListener('touchend', stopDrag);
+
+        function startDrag(e) {
+            isDragging = true;
+            const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            startX = clientX;
+            startLeft = divider.offsetLeft;
+            
+            divider.style.cursor = 'ew-resize';
+            document.body.style.cursor = 'ew-resize';
+            e.preventDefault();
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            
+            const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+            const deltaX = clientX - startX;
+            const newLeft = startLeft + deltaX;
+            
+            const containerWidth = splitView.offsetWidth;
+            const minLeft = 50; // Minimum 50px from left
+            const maxLeft = containerWidth - 50; // Minimum 50px from right
+            
+            const clampedLeft = Math.max(minLeft, Math.min(maxLeft, newLeft));
+            const percentage = (clampedLeft / containerWidth) * 100;
+            
+            divider.style.left = clampedLeft + 'px';
+            receiptSide.style.width = percentage + '%';
+            bowlSide.style.width = (100 - percentage) + '%';
+            bowlSide.style.left = percentage + '%';
+            
+            e.preventDefault();
+        }
+
+        function stopDrag() {
+            isDragging = false;
+            divider.style.cursor = 'ew-resize';
+            document.body.style.cursor = 'default';
+        }
+
+        function retakePhoto() {
+            showMessage('Redirecting to camera...');
+            setTimeout(() => {
+                window.location.href = 'capture.html';
+            }, 1000);
+        }
+
+        function confirmSplit() {
+            showMessage('Processing split...');
+            
+            // Simulate processing
+            setTimeout(() => {
+                showMessage('Split confirmed! Analyzing...');
+                setTimeout(() => {
+                    window.location.href = 'analysis-progress.html';
+                }, 1500);
+            }, 1000);
+        }
+
+        function showMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #F63C49;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 0.5rem;
+                font-weight: 500;
+                z-index: 1000;
+                animation: fadeInOut 2s ease-in-out;
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 2000);
+        }
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInOut {
+                0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Prevent text selection while dragging
+        document.addEventListener('selectstart', (e) => {
+            if (isDragging) e.preventDefault();
+        });
+    </script>
+</body>
+</html> 

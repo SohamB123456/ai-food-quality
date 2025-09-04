@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍜 PokeWorks QA - Analysis Progress</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #FD9F27 0%, #F63C49 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .progress-container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+
+        .title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            line-height: 1.5;
+        }
+
+        .progress-steps {
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .step.completed {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: rgba(76, 175, 80, 0.4);
+        }
+
+        .step-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .step.active .step-icon {
+            background: #F63C49;
+            animation: iconPulse 1.5s ease-in-out infinite;
+        }
+
+        .step.completed .step-icon {
+            background: #4CAF50;
+        }
+
+        .step-text {
+            text-align: left;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-description {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .step-status {
+            font-size: 1.5rem;
+        }
+
+        .step.completed .step-status {
+            color: #4CAF50;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 0.25rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FD9F27, #F63C49);
+            border-radius: 0.25rem;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid #F63C49;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 40px;
+            height: 40px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 30px;
+            height: 30px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .floating-element:nth-child(4) {
+            width: 50px;
+            height: 50px;
+            top: 40%;
+            right: 25%;
+            animation-delay: 6s;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .estimated-time {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .time-text {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 480px) {
+            .progress-container {
+                padding: 1rem;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .logo {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="progress-container">
+        <div class="logo">PW</div>
+        
+        <div class="title">Analyzing Your Bowl</div>
+        <div class="subtitle">Our AI is carefully examining your ingredients</div>
+
+        <div class="progress-steps">
+            <div class="step" id="step1">
+                <div class="step-info">
+                    <div class="step-icon">📄</div>
+                    <div class="step-text">
+                        <div class="step-title">OCR Processing</div>
+                        <div class="step-description">Extracting text from receipt</div>
+                    </div>
+                </div>
+                <div class="step-status">⏳</div>
+            </div>
+
+            <div class="step" id="step2">
+                <div class="step-info">
+                    <div class="step-icon">🔍</div>
+                    <div class="step-text">
+                        <div class="step-title">Ingredient Detection</div>
+                        <div class="step-description">Identifying ingredients in bowl</div>
+                    </div>
+                </div>
+                <div class="step-status">⏳</div>
+            </div>
+
+            <div class="step" id="step3">
+                <div class="step-info">
+                    <div class="step-icon">🤖</div>
+                    <div class="step-text">
+                        <div class="step-title">AI Analysis</div>
+                        <div class="step-description">Comparing bowl vs receipt</div>
+                    </div>
+                </div>
+                <div class="step-status">⏳</div>
+            </div>
+
+            <div class="step" id="step4">
+                <div class="step-info">
+                    <div class="step-icon">📊</div>
+                    <div class="step-text">
+                        <div class="step-title">Generating Report</div>
+                        <div class="step-description">Creating detailed results</div>
+                    </div>
+                </div>
+                <div class="step-status">⏳</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">Starting analysis...</div>
+
+        <div class="spinner"></div>
+
+        <div class="estimated-time">
+            <div class="time-text">⏱️ Estimated time: <span id="timeRemaining">15-20 seconds</span></div>
+        </div>
+    </div>
+
+    <script>
+        const steps = [
+            { id: 'step1', title: 'OCR Processing', duration: 3000 },
+            { id: 'step2', title: 'Ingredient Detection', duration: 4000 },
+            { id: 'step3', title: 'AI Analysis', duration: 5000 },
+            { id: 'step4', title: 'Generating Report', duration: 2000 }
+        ];
+
+        let currentStep = 0;
+        let totalProgress = 0;
+
+        function updateStep(stepIndex, status) {
+            const step = document.getElementById(steps[stepIndex].id);
+            
+            if (status === 'active') {
+                step.classList.add('active');
+                step.classList.remove('completed');
+                step.querySelector('.step-status').textContent = '⏳';
+            } else if (status === 'completed') {
+                step.classList.remove('active');
+                step.classList.add('completed');
+                step.querySelector('.step-status').textContent = '✅';
+            }
+        }
+
+        function updateProgress(progress) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = progress + '%';
+            
+            if (progress <= 25) {
+                progressText.textContent = 'Processing receipt text...';
+            } else if (progress <= 50) {
+                progressText.textContent = 'Detecting ingredients...';
+            } else if (progress <= 75) {
+                progressText.textContent = 'Analyzing with AI...';
+            } else if (progress <= 90) {
+                progressText.textContent = 'Finalizing results...';
+            } else {
+                progressText.textContent = 'Complete!';
+            }
+        }
+
+        function updateTimeRemaining(seconds) {
+            const timeElement = document.getElementById('timeRemaining');
+            if (seconds <= 0) {
+                timeElement.textContent = 'Almost done...';
+            } else {
+                timeElement.textContent = `${seconds} seconds remaining`;
+            }
+        }
+
+        function processSteps() {
+            let totalDuration = steps.reduce((sum, step) => sum + step.duration, 0);
+            let elapsed = 0;
+
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    // Activate current step
+                    updateStep(index, 'active');
+                    
+                    // Calculate progress
+                    elapsed += step.duration;
+                    totalProgress = (elapsed / totalDuration) * 100;
+                    updateProgress(totalProgress);
+                    
+                    // Update time remaining
+                    const remainingSeconds = Math.ceil((totalDuration - elapsed) / 1000);
+                    updateTimeRemaining(remainingSeconds);
+                    
+                    // Complete step after duration
+                    setTimeout(() => {
+                        updateStep(index, 'completed');
+                        
+                        // If this is the last step, redirect to results
+                        if (index === steps.length - 1) {
+                            setTimeout(() => {
+                                window.location.href = 'results.html';
+                            }, 1000);
+                        }
+                    }, step.duration);
+                    
+                }, elapsed);
+            });
+        }
+
+        // Start the analysis process
+        setTimeout(() => {
+            processSteps();
+        }, 1000);
+
+        // Update time remaining every second
+        let timeRemaining = 15;
+        const timeInterval = setInterval(() => {
+            timeRemaining--;
+            if (timeRemaining <= 0) {
+                clearInterval(timeInterval);
+            }
+        }, 1000);
+    </script>
+</body>
+</html> 
