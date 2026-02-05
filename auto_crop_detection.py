@@ -11,17 +11,8 @@ import os
 import argparse
 
 def detect_bowl_receipt_split(image_path, output_dir=None):
-    """
-    Automatically detect the split between bowl and receipt in a combined image
-    
-    Args:
-        image_path (str): Path to the input image
-        output_dir (str): Directory to save cropped images (optional)
-    
-    Returns:
-        tuple: (bowl_crop, receipt_crop) as numpy arrays
-    """
-    print(f"🔍 Processing image: {os.path.basename(image_path)}")
+
+    print(f"Processing image: {os.path.basename(image_path)}")
     
     # Load image
     image = cv2.imread(image_path)
@@ -29,17 +20,17 @@ def detect_bowl_receipt_split(image_path, output_dir=None):
         raise ValueError(f"Could not load image: {image_path}")
     
     height, width = image.shape[:2]
-    print(f"📏 Image dimensions: {width}x{height}")
+    print(f"Image dimensions: {width}x{height}")
     
-    # Convert to grayscale for analysis
+    # Convert to grayscale
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     
-    # Method 1: Simple vertical split (middle)
+    # Vertical split (middle)
     mid_point = width // 2
     bowl_region = image[:, :mid_point]
     receipt_region = image[:, mid_point:]
     
-    # Method 2: Edge detection to find natural split
+    # Edge detection 
     edges = cv2.Canny(gray, 50, 150)
     
     # Find vertical lines that might indicate a split
@@ -62,7 +53,7 @@ def detect_bowl_receipt_split(image_path, output_dir=None):
                 min_distance = distance
                 best_split = x
     
-    print(f"📍 Detected split at x={best_split} (original middle: {mid_point})")
+    print(f"Detected split at x={best_split} (original middle: {mid_point})")
     
     # Crop using the detected split
     bowl_crop = image[:, :best_split]
@@ -78,22 +69,12 @@ def detect_bowl_receipt_split(image_path, output_dir=None):
         
         cv2.imwrite(bowl_path, bowl_crop)
         cv2.imwrite(receipt_path, receipt_crop)
-        
-        print(f"💾 Saved bowl crop: {bowl_path}")
-        print(f"💾 Saved receipt crop: {receipt_path}")
     
     return bowl_crop, receipt_crop
 
 def batch_process_images(input_dir, output_dir):
-    """
-    Process all images in a directory
-    
-    Args:
-        input_dir (str): Directory containing input images
-        output_dir (str): Directory to save cropped images
-    """
+   
     supported_formats = ('.jpg', '.jpeg', '.png', '.bmp', '.tiff')
-    
     if not os.path.exists(input_dir):
         raise ValueError(f"Input directory does not exist: {input_dir}")
     
@@ -113,9 +94,9 @@ def batch_process_images(input_dir, output_dir):
                 print(f"❌ Error processing {filename}: {e}")
                 error_count += 1
     
-    print(f"\n✅ Processing complete!")
-    print(f"📊 Processed: {processed_count} images")
-    print(f"❌ Errors: {error_count} images")
+    print(f"\nProcessing complete!")
+    print(f"Processed: {processed_count} images")
+    print(f"Errors: {error_count} images")
 
 def main():
     parser = argparse.ArgumentParser(description='Auto crop bowl and receipt from combined images')
